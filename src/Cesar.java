@@ -51,6 +51,5 @@ public class Cesar
 
 		System.out.println( "Encrypting the message "+ str   +" => "+ str_enc	);
 		System.out.println( "Decrypting the message "+ str_enc +" => "+ str_dec	);
-		
 	}
 }
