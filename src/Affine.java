@@ -35,7 +35,7 @@ public class Affine
 
 	/**
 	 * Define the encrypting method while verifying the multiplier's
-	 * value (it needs to be an inverse element in {@code MODULO} .
+	 * value (it needs to be an invertible element in Z/ {@code MODULO}Z .
 	 * Return null if the value is wrong.
 	 * @param a multiplier
 	 * @param b term 
@@ -87,12 +87,18 @@ public class Affine
 	public static void main(String[] args)
     {
 		String str = "bonjour";
+        int a = 13; // random number that is invertible in Z/ MODULO Z
+        int b = (int) (Math.random() * Affine.MODULO );
 
-		Affine f = new Affine(13, 3);
-		String str_enc = f.encrypt(str);
-		String str_dec = f.decrypt(str_enc); // must return "bonjour"
-
-		System.out.println( "Encrypting the message "+ str   +" => "+ str_enc	);
-		System.out.println( "Decrypting the message "+ str_enc +" => "+ str_dec	);
+        Affine f = Affine.createFunction(a, b);
+        
+        if ( f != null )
+		{
+            String str_enc = f.encrypt(str);
+		    String str_dec = f.decrypt(str_enc); // must return "bonjour"
+            System.out.println( "Encrypting the message "+ str   +" => "+ str_enc	);
+            System.out.println( "Decrypting the message "+ str_enc +" => "+ str_dec	);
+        }
+        else System.out.println("The integer " + a + " isn't inversible in Z/" + Affine.MODULO + "Z");
 	}
 }
