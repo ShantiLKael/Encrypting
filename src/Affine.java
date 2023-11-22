@@ -26,11 +26,11 @@ public class Affine
 		this.term = b;
 
 		// Finds the inverse of the multiplier 
-        for ( int i = 0; i < Affine.MODULO; i++ )
-        {
-            int tmp = ( this.multiplier * i ) % Affine.MODULO;
-            if ( tmp == 1 ) this.m_inv = i;
-        }
+		for ( int i = 0; i < Affine.MODULO; i++ )
+		{
+			int tmp = ( this.multiplier * i ) % Affine.MODULO;
+			if ( tmp == 1 ) this.m_inv = i;
+		}
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class Affine
 		return iM;
 	}
 
-    public String decrypt( String m )
+	public String decrypt( String m )
 	{
 		String iM = "";
 
@@ -84,21 +84,29 @@ public class Affine
 		return iM;
 	}
 
-	public static void main(String[] args)
-    {
-		String str = "bonjour";
-        int a = 13; // random number that is invertible in Z/ MODULO Z
-        int b = (int) (Math.random() * Affine.MODULO );
+	public static int randomInvertible()
+	{
+		int[] invertibles = new int [ Affine.MODULO / 2 ];
+		int nbInvertibles = 0;
 
-        Affine f = Affine.createFunction(a, b);
-        
-        if ( f != null )
-		{
-            String str_enc = f.encrypt(str);
-		    String str_dec = f.decrypt(str_enc); // must return "bonjour"
-            System.out.println( "Encrypting the message "+ str   +" => "+ str_enc	);
-            System.out.println( "Decrypting the message "+ str_enc +" => "+ str_dec	);
-        }
-        else System.out.println("The integer " + a + " isn't inversible in Z/" + Affine.MODULO + "Z");
+		for ( int i = 0; i < Affine.MODULO; i++ )
+			if ( Crypto.PGCD(i, Affine.MODULO) == 1 ) invertibles[ nbInvertibles++ ] = i;
+
+		return invertibles[ (int) ( Math.random() * nbInvertibles ) ];
+	}
+
+	public static void main(String[] args)
+	{
+		String str = "bonjour";
+		int a = Affine.randomInvertible();
+		int b = (int) ( Math.random() * Affine.MODULO );
+
+		Affine f = Affine.createFunction(a, b);
+		System.out.println("\tFunctoin is : " + a + ".X + " + b);
+		
+		String str_enc = f.encrypt(str);
+		String str_dec = f.decrypt(str_enc); // must return "bonjour"
+		System.out.println( "\nEncrypting the message "+ str   +" => "+ str_enc	);
+		System.out.println( "\nDecrypting the message "+ str_enc +" => "+ str_dec + "\n" );
 	}
 }
