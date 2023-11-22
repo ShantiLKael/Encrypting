@@ -36,25 +36,37 @@ public class Client
 	 * @param r receiver
 	 * @param m message
 	 */
-	public void messaging( Client r, String m )
+	public void sendMessage( Client r, String m )
 	{
 		if ( this.isFriend(r) )
-		try 
-		{
-			// Connecting to the server of the receiver
-			Socket toServ = new Socket( r.host, r.servSocket );
+			try 
+			{
+				System.out.println( this.name + " sending message...");
 
-			PrintWriter out = new PrintWriter( toServ.getOutputStream(), true );
-			out.println( this.name + " : " + m);
+				// Connecting to the server of the receiver
+				System.out.println(r.host + " : " + r.servSocket);
+				Socket toServ = new Socket( r.host, r.servSocket );
 
-			out.close();
+				// toServ.close();
 
-		} catch (IOException e) { System.out.println(e); }
+				PrintWriter out = new PrintWriter( toServ.getOutputStream(), true );
+				out.println( this.name + " : " + m);
+
+				out.close();
+
+			} catch (IOException e) { e.printStackTrace(); }
 			
 	}
 
 	private boolean isFriend ( Client f ) { return this.friends.contains(f); }
-	public  void    addFriend( Client f ) { this.friends.add(f); }
+	public  void    addFriend( Client f ) 
+	{
+		if ( !this.isFriend(f) )
+		{
+			this.friends.add(f); 
+			f.friends.add(this);
+		}
+	}
 
 	/**
 	 * Add a new message to the message history
@@ -79,6 +91,8 @@ public class Client
 	{
 		try
 		{
+			System.out.println( this.name + " receiving message...");
+			
 			ServerSocket ownServ =  new ServerSocket( this.servSocket );
 			Socket toClient = ownServ.accept(); // waiting for client
 
@@ -102,5 +116,24 @@ public class Client
 	{
 		Client c = (Client) o;
 		return this.name.equals( c.name );
+	}
+
+	public static void main(String[] args)
+	{
+		Client c1 = new Client("Justine", "di-729-09", 6000);
+		Client c2 = new Client("Medhi",   "di-729-11", 9000);
+
+		c1.addFriend(c2);
+
+		boolean bOk = true;
+		int i = 0;
+
+		while (bOk)
+		{
+			if ( i == 0 ) c2.sendMessage(c1, "Bonjour mon con"); System.out.println("\t\t\t>>> C1 SENDING MESSAGE <<");
+			c1.receiveMessage();
+			System.out.println(i);
+			i++;
+		}
 	}
 }

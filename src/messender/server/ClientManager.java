@@ -27,16 +27,15 @@ class ClientManager implements Runnable
 	@Override
     public void run() 
 	{
-		System.out.println("Connexion   du client " + ((this.senderName != null) ? this.senderName : "")); // getHostName() ??
+		System.out.println("Connexion du client " + ((this.senderName != null) ? this.senderName : "")); // getHostName() ??
 
 		do
 		{
 			try 
 			{
-				out.println("Bienvenue :3");
-				Thread.sleep(1000);  // attend 1000ms
+				System.out.println( this.senderName + " " + in.readLine() );
 			} 
-			catch (InterruptedException ie) {}
+			catch (IOException ie) {}
 
 		} while ( !this.out.checkError() );
 
