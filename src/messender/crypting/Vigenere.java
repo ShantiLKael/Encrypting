@@ -1,6 +1,8 @@
+package messender.crypting;
+
 /**
  * @author Ashanti NJANJA - BUT Info 2
- * @date 15/11/23
+ * Date : 15/11/23
  * 
  * Vigenère encrypting and decryptying methods 
  */
