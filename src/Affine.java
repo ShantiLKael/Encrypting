@@ -50,6 +50,11 @@ public class Affine
 	public int getTerm		() { return term; }
 	public int getM_inv		() { return m_inv; }
 
+	/**
+	 * The encrypting method of Affine : a.X + b thats
+	 * retunrs the encrypted message
+	 * @param m 
+	 */
 	public String encrypt( String m )
 	{
 		String iM = "";
@@ -67,6 +72,12 @@ public class Affine
 		return iM;
 	}
 
+
+	/**
+	 * The decrypting method of Affine that returns the 
+	 * original message
+	 * @param m encrypted message
+	 */
 	public String decrypt( String m )
 	{
 		String iM = "";
@@ -84,15 +95,19 @@ public class Affine
 		return iM;
 	}
 
+	/**
+	 * This function returns a random number of the invertible 
+	 * number of Z/ModZ
+	 */
 	public static int randomInvertible()
 	{
 		int[] invertibles = new int [ Affine.MODULO / 2 ];
-		int nbInvertibles = 0;
+		int nbInvertible = 0;
 
 		for ( int i = 0; i < Affine.MODULO; i++ )
-			if ( Crypto.PGCD(i, Affine.MODULO) == 1 ) invertibles[ nbInvertibles++ ] = i;
+			if ( Crypto.PGCD(i, Affine.MODULO) == 1 ) invertibles[ nbInvertible++ ] = i;
 
-		return invertibles[ (int) ( Math.random() * nbInvertibles ) ];
+		return invertibles[ (int) ( Math.random() * nbInvertible ) ];
 	}
 
 	public static void main(String[] args)
@@ -106,7 +121,7 @@ public class Affine
 		
 		String str_enc = f.encrypt(str);
 		String str_dec = f.decrypt(str_enc); // must return "bonjour"
-		System.out.println( "\nEncrypting the message "+ str   +" => "+ str_enc	);
+		System.out.println( "\nEncrypting the message "+ str     +" => "+ str_enc	);
 		System.out.println( "\nDecrypting the message "+ str_enc +" => "+ str_dec + "\n" );
 	}
 }
