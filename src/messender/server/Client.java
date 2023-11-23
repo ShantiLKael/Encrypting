@@ -120,8 +120,8 @@ public class Client
 
 	public static void main(String[] args)
 	{
-		Client c1 = new Client("Justine", "di-729-09", 6000);
-		Client c2 = new Client("Medhi",   "di-729-11", 9000);
+		Client c1 = new Client("Justine", "722-04", 6000);
+		Client c2 = new Client("Medhi",   "722-04", 9000);
 
 		c1.addFriend(c2);
 
