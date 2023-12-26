@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,12 +18,12 @@ public class Client
 	private int    servSocket;
 
 	private List<Client> friends;
-	private HashMap<String, ArrayList <String>> histMessages;
+	private Map<String, ArrayList <String>> histMessages;
 
 	public Client( String name, String host, int servSocket )
 	{
 		this.name = name;
-		this.host = host;
+		this.host = (host != null) ? host : "localhost";
 		this.friends  = new LinkedList<Client>();
 		this.histMessages = new HashMap <String, ArrayList <String>>();
 		this.servSocket = servSocket;
@@ -73,7 +74,7 @@ public class Client
 	 * @param r interlocutor
 	 * @param m message
 	 */
-	public void addMessage( String r, String m ) 
+	public void addMessageHistory( String r, String m ) 
 	{
 		if ( !this.histMessages.containsKey( r ) )
 			this.histMessages.put( r, new ArrayList<String>());
@@ -97,10 +98,10 @@ public class Client
 			Socket toClient = ownServ.accept(); // waiting for client
 
 			// instantiate a ClientManager to process the client's requests
-			ClientManager gdc = new ClientManager(toClient);
+			ClientManager receiving = new ClientManager(toClient);
 
 			// putting the manager un a Thread
-			Thread tgdc = new Thread(gdc);
+			Thread tgdc = new Thread(receiving);
 
 			// launch thread that will manage client
 			tgdc.start();
@@ -120,8 +121,8 @@ public class Client
 
 	public static void main(String[] args)
 	{
-		Client c1 = new Client("Justine", "localhost", 6000);
-		Client c2 = new Client("Medhi",   "localhost", 9000);
+		Client c1 = new Client("Justine", 6000);
+		Client c2 = new Client("Medhi",   9000);
 
 		c1.addFriend(c2);
 
@@ -130,7 +131,12 @@ public class Client
 
 		while (bOk)
 		{
-			if ( i == 0 ) c2.sendMessage(c1, "Bonjour mon con"); System.out.println("\t\t\t>>> C1 SENDING MESSAGE <<");
+			if ( i == 10 )
+			{
+				c2.sendMessage(c1, "Bonjour");
+				System.out.println("\t\t\t>>> C1 SENDING MESSAGE <<");
+			}
+
 			c1.receiveMessage();
 			System.out.println(i);
 			i++;
