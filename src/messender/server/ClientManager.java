@@ -10,7 +10,7 @@ class ClientManager implements Runnable
 	private PrintWriter out;
 	Socket servSocket;
 
-	public ClientManager ( Socket s ) 
+	public ClientManager ( String senderName, Socket s ) 
 	{
 		this.servSocket	 = s;
 
@@ -20,9 +20,14 @@ class ClientManager implements Runnable
 			this.out = new PrintWriter( s.getOutputStream(), true );
 
 		} catch ( IOException e ) { e.printStackTrace(); }
+
+		this.senderName = senderName;
 	}
 
-	public ClientManager ( Client c, Socket s ) { this(s); this.senderName = c.getName(); }
+	public ClientManager ( Socket s ) 
+	{
+		this( "unknown", s);
+	}
 
 	@Override
     public void run() 
@@ -34,8 +39,11 @@ class ClientManager implements Runnable
 			try 
 			{
 				System.out.println( this.senderName + " " + in.readLine() );
-			} 
+				Thread.sleep(500);
+				
+			}
 			catch (IOException ie) {}
+			catch (InterruptedException e) {}
 
 		} while ( !this.out.checkError() );
 

@@ -15,71 +15,67 @@ public class Client
 {
 	private String name;
 	private String host;
-	private int    servSocket;
+	private int    port;
+
+	private ServerSocket servSocket;
+	private Socket socket;
 
 	private List<Client> friends;
 	private Map<String, ArrayList <String>> histMessages;
 
-	public Client( String name, String host, int servSocket )
+	public Client( String name, String host, int port )
 	{
 		this.name = name;
-		this.host = (host != null) ? host : "localhost";
+		this.host = host;
 		this.friends  = new LinkedList<Client>();
 		this.histMessages = new HashMap <String, ArrayList <String>>();
-		this.servSocket = servSocket;
+		this.port = port;
+
+		try
+		{
+			this.servSocket = new ServerSocket(this.port);
+		} catch (IOException e) { e.printStackTrace(); }
 	}
 
-	public Client( String name, int servSocket ) { this(name, null, servSocket); }
+	public Client( String name, int port )
+	{
+		this(name, "localhost", port);
+	}
 
 	/**
 	 * Allows the clients to send messages to another.
 	 * A client can only send message to a Client if they are friends
-	 * @param r receiver
+	 * @param receiver
 	 * @param m message
 	 */
-	public void sendMessage( Client r, String m )
+	public void sendMessage( String receiverHost, int receiverPort, String m )
 	{
-		if ( this.isFriend(r) )
-			try 
-			{
-				System.out.println( this.name + " sending message...");
-
-				// Connecting to the server of the receiver
-				System.out.println(r.host + " : " + r.servSocket);
-				Socket toServ = new Socket( r.host, r.servSocket );
-
-				// toServ.close();
-
-				PrintWriter out = new PrintWriter( toServ.getOutputStream(), true );
-				out.println( this.name + " : " + m);
-
-				out.close();
-
-			} catch (IOException e) { e.printStackTrace(); }
-			
-	}
-
-	private boolean isFriend ( Client f ) { return this.friends.contains(f); }
-	public  void    addFriend( Client f ) 
-	{
-		if ( !this.isFriend(f) )
+		try 
 		{
-			this.friends.add(f); 
-			f.friends.add(this);
-		}
+			System.out.println( this.name + " sending message...");
+
+			// Connecting to the server of the receiver
+			Socket toServ = new Socket( receiverHost, receiverPort );
+
+			PrintWriter out = new PrintWriter( toServ.getOutputStream(), true );
+			out.println( this.name + " : " + m);
+
+			out.close();
+			toServ.close();
+		} catch (IOException e) { e.printStackTrace(); }
 	}
 
 	/**
 	 * Add a new message to the message history
-	 * @param r interlocutor
+	 * @param clientName interlocutor
 	 * @param m message
 	 */
-	public void addMessageHistory( String r, String m ) 
+	public void addMessageHistory( String clientName, String m ) 
 	{
-		if ( !this.histMessages.containsKey( r ) )
-			this.histMessages.put( r, new ArrayList<String>());
+		if ( !this.histMessages.containsKey(clientName) )
+			this.histMessages.put(clientName, new ArrayList<String>());
 	
-		this.histMessages.get( r ).add( m );
+		this.histMessages.get(clientName).add(m);
 	}
 
 	/**
@@ -93,9 +89,7 @@ public class Client
 		try
 		{
 			System.out.println( this.name + " receiving message...");
-			
-			ServerSocket ownServ =  new ServerSocket( this.servSocket );
-			Socket toClient = ownServ.accept(); // waiting for client
+			Socket toClient = this.servSocket.accept(); // waiting for client
 
 			// instantiate a ClientManager to process the client's requests
 			ClientManager receiving = new ClientManager(toClient);
@@ -112,34 +106,33 @@ public class Client
 
 	public String getName() { return this.name; }
 
+	private boolean isFriend ( Client f ) { return this.friends.contains(f); }
+	public  void    addFriend( Client f ) 
+	{
+		if ( !this.isFriend(f) )
+		{
+			this.friends.add(f); 
+			f.friends.add(this);
+		}
+	}
+
 	@Override
-	public boolean equals(Object o) 
+	public boolean equals( Object o ) 
 	{
 		Client c = (Client) o;
-		return this.name.equals( c.name );
+		return this.name.equals(c.name);
+	}
+
+	@Override
+	public String toString()
+	{
+		return String.format( "%-15s", "Client " + this.name) +  " [" + this.host + "]" + 
+			   "  : " + this.port;
 	}
 
 	public static void main(String[] args)
 	{
 		Client c1 = new Client("Justine", 6000);
-		Client c2 = new Client("Medhi",   9000);
-
-		c1.addFriend(c2);
-
-		boolean bOk = true;
-		int i = 0;
-
-		while (bOk)
-		{
-			if ( i == 10 )
-			{
-				c2.sendMessage(c1, "Bonjour");
-				System.out.println("\t\t\t>>> C1 SENDING MESSAGE <<");
-			}
-
-			c1.receiveMessage();
-			System.out.println(i);
-			i++;
-		}
+		c1.sendMessage("localhost", 9000, "wassup");
 	}
 }
