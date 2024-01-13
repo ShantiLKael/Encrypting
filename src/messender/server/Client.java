@@ -18,37 +18,47 @@ public class Client
 	private int    port;
 
 	private ServerSocket servSocket;
-	private Socket socket;
 
 	private List<Client> friends;
-	private Map<String, ArrayList <String>> histMessages;
+	private Map<String, List<String>> histMessages;
 
-	public Client( String name, String host, int port )
+	public Client( String name, String host, int port, boolean createServ )
 	{
 		this.name = name;
 		this.host = host;
 		this.friends  = new LinkedList<Client>();
-		this.histMessages = new HashMap <String, ArrayList <String>>();
+		this.histMessages = new HashMap <String, List<String>>();
 		this.port = port;
 
-		try
-		{
-			this.servSocket = new ServerSocket(this.port);
-		} catch (IOException e) { e.printStackTrace(); }
+		if ( createServ )
+			try
+			{
+				this.servSocket = new ServerSocket(this.port);
+			} catch (IOException e) { e.printStackTrace(); }
 	}
 
-	public Client( String name, int port )
+	public Client( String name, int port, boolean createServ )
 	{
-		this(name, "localhost", port);
+		this(name, "localhost", port, createServ);
+	}
+
+	public Client ( String name, int port )
+	{
+		this(name, "localhost", port, true);
+	}
+
+	public Client ( String name, String host, int port )
+	{
+		this(name, host, port, true);
 	}
 
 	/**
 	 * Allows the clients to send messages to another.
 	 * A client can only send message to a Client if they are friends
 	 * @param receiver
-	 * @param m message
+	 * @param message message
 	 */
-	public void sendMessage( String receiverHost, int receiverPort, String m )
+	public void sendMessage( String receiverHost, int receiverPort, String message )
 	{
 		try 
 		{
@@ -58,24 +68,26 @@ public class Client
 			Socket toServ = new Socket( receiverHost, receiverPort );
 
 			PrintWriter out = new PrintWriter( toServ.getOutputStream(), true );
-			out.println( this.name + " : " + m);
+			out.println( this.name + " : " + message);
 
 			out.close();
 			toServ.close();
-		} catch (IOException e) { e.printStackTrace(); }
+		} 
+		catch (java.net.ConnectException a) { System.out.println("this user already exists."); }
+		catch (IOException e) { e.printStackTrace(); }
 	}
 
 	/**
 	 * Add a new message to the message history
 	 * @param clientName interlocutor
-	 * @param m message
+	 * @param message
 	 */
-	public void addMessageHistory( String clientName, String m ) 
+	public void addMessageHistory( String senderName, String m ) 
 	{
-		if ( !this.histMessages.containsKey(clientName) )
-			this.histMessages.put(clientName, new ArrayList<String>());
+		if ( !this.histMessages.containsKey(senderName) )
+			this.histMessages.put(senderName, new ArrayList<String>());
 	
-		this.histMessages.get(clientName).add(m);
+		this.histMessages.get(senderName).add(m);
 	}
 
 	/**
@@ -84,7 +96,7 @@ public class Client
 	 * at once. This function needs to be used in a while loop in order to intercept 
 	 * any message.
 	 */
-	public void receiveMessage()
+	public void receiveMessage( String senderName )
 	{
 		try
 		{
@@ -92,7 +104,7 @@ public class Client
 			Socket toClient = this.servSocket.accept(); // waiting for client
 
 			// instantiate a ClientManager to process the client's requests
-			ClientManager receiving = new ClientManager(toClient);
+			ClientManager receiving = new ClientManager(senderName, this, toClient);
 
 			// putting the manager un a Thread
 			Thread tgdc = new Thread(receiving);
@@ -120,7 +132,7 @@ public class Client
 	public boolean equals( Object o ) 
 	{
 		Client c = (Client) o;
-		return this.name.equals(c.name);
+		return this.name.equals(c.name) || this.port == c.port;
 	}
 
 	@Override

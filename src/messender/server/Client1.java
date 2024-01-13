@@ -9,8 +9,7 @@ public class Client1
 	public static void main(String[] args)
 	{
 		Client c2 = new Client("Medhi", 9000);
-
-		c2.receiveMessage();
+		c2.receiveMessage("Justine");
 	}
 
 }

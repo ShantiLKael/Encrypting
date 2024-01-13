@@ -1,0 +1,36 @@
+[LAUCHING THE APP] 
+
+    The application will start by creating the user's server using a port that isn't use. The program will scatter 
+    for unused ports while their a loading screen playing and I think that it can take a while. To parry the wait I'll include a
+    loading bar describing what the program is doing. 
+     => Creating 2 Thread : one for the creation of the user's server and one for the loading bar description
+
+       - Server Creation : has an LoadingBar attribute where he can set the descriptive text of whats happening
+       - LoadingBar : has a boolean to make it stop animating for when the user server creation is finished
+
+[HEADER / NAVBAR]
+    Adding 3 icons on the header :
+        => PLUS icon to add a friend
+        => SEND icon to send message to a friend
+        => THEME icon to change the theme color
+        - make sure the icons have a white and black version for when changing themes
+
+[SEND]
+    - list of the different friend
+    - you can choose to discuss with a friend
+    - when you click to  
+
+[ADD]
+    - you will need a hostname and port to send a friend request
+    - notify if the targeted person cannot be reached (the hostname or port is wrong)
+    - notify when you foud someone
+    - while the friend request isnt accepted, the reciever wont recieve the messages
+    - waiting list of people you asked to become friend
+
+[THEMES]
+    There will be multiple themes a pink one, blue one and trans one + a personnable one :D 
+        - you can change the header, message color, background color, etc...
+    
+
+
+ 

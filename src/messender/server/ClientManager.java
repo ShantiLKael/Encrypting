@@ -6,13 +6,15 @@ import java.net.Socket;
 class ClientManager implements Runnable
 {
 	private String senderName;
+	private Client recipient;
 	private BufferedReader in;
 	private PrintWriter out;
 	Socket servSocket;
 
-	public ClientManager ( String senderName, Socket s ) 
+	public ClientManager ( String senderName, Client recipient, Socket s ) 
 	{
-		this.servSocket	 = s;
+		this.servSocket	= s;
+		this.recipient  = recipient;
 
 		try 
 		{
@@ -24,11 +26,6 @@ class ClientManager implements Runnable
 		this.senderName = senderName;
 	}
 
-	public ClientManager ( Socket s ) 
-	{
-		this( "unknown", s);
-	}
-
 	@Override
     public void run() 
 	{
@@ -38,11 +35,10 @@ class ClientManager implements Runnable
 		{
 			try 
 			{
-				System.out.println( this.senderName + " " + in.readLine() );
+				System.out.println( this.senderName + " : " + in.toString() );
 				Thread.sleep(500);
-				
 			}
-			catch (IOException ie) {}
+			//catch (IOException ie) {}
 			catch (InterruptedException e) {}
 
 		} while ( !this.out.checkError() );
@@ -83,7 +79,7 @@ class ClientManager implements Runnable
 
 
 		} catch (IOException ioe) {}
-		 */
+		*/
 	}
 
 }
