@@ -18,7 +18,7 @@ class ClientManager implements Runnable
 
 		try 
 		{
-			this.in  = new BufferedReader( new InputStreamReader( s.getInputStream() ) );
+			this.in  = new BufferedReader( new InputStreamReader( s.getInputStream()) );
 			this.out = new PrintWriter( s.getOutputStream(), true );
 
 		} catch ( IOException e ) { e.printStackTrace(); }
@@ -35,7 +35,7 @@ class ClientManager implements Runnable
 		{
 			try 
 			{
-				System.out.println( this.senderName + " : " + in.toString() );
+				System.out.println(this.senderName + " : " + in.toString());
 				Thread.sleep(500);
 			}
 			//catch (IOException ie) {}

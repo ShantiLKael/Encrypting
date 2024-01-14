@@ -62,13 +62,13 @@ public class Client
 	{
 		try 
 		{
-			System.out.println( this.name + " sending message...");
+			System.out.println(this.name + " sending message...");
 
 			// Connecting to the server of the receiver
-			Socket toServ = new Socket( receiverHost, receiverPort );
+			Socket toServ = new Socket(receiverHost, receiverPort);
 
-			PrintWriter out = new PrintWriter( toServ.getOutputStream(), true );
-			out.println( this.name + " : " + message);
+			PrintWriter out = new PrintWriter(toServ.getOutputStream(), true);
+			out.println(this.name + " : " + message);
 
 			out.close();
 			toServ.close();
@@ -94,13 +94,13 @@ public class Client
 	 * This function makes the client wait for a new message.
 	 * It creates a server and uses a thread to be able to receive multiple messages
 	 * at once. This function needs to be used in a while loop in order to intercept 
-	 * any message.
+	 * messages at any time.
 	 */
 	public void receiveMessage( String senderName )
 	{
 		try
 		{
-			System.out.println( this.name + " receiving message...");
+			System.out.println(this.name + " receiving message...");
 			Socket toClient = this.servSocket.accept(); // waiting for client
 
 			// instantiate a ClientManager to process the client's requests
