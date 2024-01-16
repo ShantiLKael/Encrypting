@@ -9,7 +9,18 @@ public class Client1
 	public static void main(String[] args)
 	{
 		Client c2 = new Client("Medhi", 9000);
-		c2.receiveMessage("Justine");
+		Client c1 = new Client("Justine", 6000, false);
+		Client c3 = new Client("Ali", 9001, false);
+
+		c2.addFriend(c1);
+		c2.addFriend(c3);
+
+		
+		while (true)
+		{
+			c2.receiveMessage(); 
+			System.out.println(c2.getHistMessages());
+		}
 	}
 
 }

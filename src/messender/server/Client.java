@@ -22,19 +22,22 @@ public class Client
 	private List<Client> friends;
 	private Map<String, List<String>> histMessages;
 
-	public Client( String name, String host, int port, boolean createServ )
+	Client( String name, String host, int port, boolean createServ )
 	{
 		this.name = name;
 		this.host = host;
 		this.friends  = new LinkedList<Client>();
 		this.histMessages = new HashMap <String, List<String>>();
+
 		this.port = port;
 
 		if ( createServ )
 			try
 			{
 				this.servSocket = new ServerSocket(this.port);
-			} catch (IOException e) { e.printStackTrace(); }
+			}
+			catch (java.net.ConnectException a) { System.out.println("this user already exists."); }
+			catch (IOException e) { e.printStackTrace(); }
 	}
 
 	public Client( String name, int port, boolean createServ )
@@ -52,13 +55,18 @@ public class Client
 		this(name, host, port, true);
 	}
 
+	public Client ( Client c )
+	{
+		this(c.name, c.host, c.port, false);
+	}
+
 	/**
 	 * Allows the clients to send messages to another.
 	 * A client can only send message to a Client if they are friends
 	 * @param receiver
 	 * @param message message
 	 */
-	public void sendMessage( String receiverHost, int receiverPort, String message )
+	void sendMessage( String receiverHost, int receiverPort, String message )
 	{
 		try 
 		{
@@ -67,13 +75,12 @@ public class Client
 			// Connecting to the server of the receiver
 			Socket toServ = new Socket(receiverHost, receiverPort);
 
-			PrintWriter out = new PrintWriter(toServ.getOutputStream(), true);
-			out.println(this.name + " : " + message);
+			PrintWriter out = new PrintWriter(toServ.getOutputStream(), false);
+			out.println( this.name + ":" + message);
 
 			out.close();
 			toServ.close();
 		} 
-		catch (java.net.ConnectException a) { System.out.println("this user already exists."); }
 		catch (IOException e) { e.printStackTrace(); }
 	}
 
@@ -82,7 +89,7 @@ public class Client
 	 * @param clientName interlocutor
 	 * @param message
 	 */
-	public void addMessageHistory( String senderName, String m ) 
+	void addMessageHistory( String senderName, String m ) 
 	{
 		if ( !this.histMessages.containsKey(senderName) )
 			this.histMessages.put(senderName, new ArrayList<String>());
@@ -96,35 +103,29 @@ public class Client
 	 * at once. This function needs to be used in a while loop in order to intercept 
 	 * messages at any time.
 	 */
-	public void receiveMessage( String senderName )
+	void receiveMessage()
 	{
-		try
-		{
-			System.out.println(this.name + " receiving message...");
-			Socket toClient = this.servSocket.accept(); // waiting for client
+	
+		System.out.println(this.name + " receiving message...");
+		
+		// instantiate a ClientManager to process the client's requests
+		ClientManager receiving = new ClientManager(this);
 
-			// instantiate a ClientManager to process the client's requests
-			ClientManager receiving = new ClientManager(senderName, this, toClient);
+		// putting the manager un a Thread
+		Thread tgdc = new Thread(receiving);
 
-			// putting the manager un a Thread
-			Thread tgdc = new Thread(receiving);
-
-			// launch thread that will manage client
-			tgdc.start();
-		}
-		catch ( UnknownHostException e ) { e.printStackTrace(); }
-		catch ( IOException e ) { e.printStackTrace(); }
+		// launch thread that will manage client
+		tgdc.start();
 	}
 
-	public String getName() { return this.name; }
 
-	private boolean isFriend ( Client f ) { return this.friends.contains(f); }
-	public  void    addFriend( Client f ) 
+	boolean isFriend ( Client c ) { return this.friends.contains(c); }
+	void   addFriend( Client c ) 
 	{
-		if ( !this.isFriend(f) )
+		if ( !this.isFriend(c) )
 		{
-			this.friends.add(f); 
-			f.friends.add(this);
+			this.friends.add(c); 
+			c.friends.add(this);
 		}
 	}
 
@@ -135,16 +136,45 @@ public class Client
 		return this.name.equals(c.name) || this.port == c.port;
 	}
 
+	String getName() { return this.name; }
+	Map<String,List<String>> getHistMessages() { return this.histMessages; }
+	List<Client> getFriends() { return this.friends; }
+	ServerSocket getServSocket() { return this.servSocket; }
+
+
 	@Override
 	public String toString()
 	{
 		return String.format( "%-15s", "Client " + this.name) +  " [" + this.host + "]" + 
-			   "  : " + this.port;
+			"  : " + this.port;
 	}
 
 	public static void main(String[] args)
 	{
 		Client c1 = new Client("Justine", 6000);
-		c1.sendMessage("localhost", 9000, "wassup");
+		Client c3 = new Client("Ali", 9001);
+
+		for ( int i = 0; i < 5; i++)
+		{
+			try
+			{
+				Thread.sleep(600*5);
+			}
+			catch (InterruptedException e) { e.printStackTrace(); }
+			
+			c1.sendMessage("localhost", 9000, "wassup");
+		}
+
+
+		for ( int i = 0; i < 5; i++)
+		{
+			try
+			{
+				Thread.sleep(600*5);
+			}
+			catch (InterruptedException e) { e.printStackTrace(); }
+			
+			c3.sendMessage("localhost", 9000, "hello");
+		}
 	}
 }

@@ -2,6 +2,8 @@ package messender.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.stream.Collectors;
 
 class ClientManager implements Runnable
 {
@@ -11,36 +13,47 @@ class ClientManager implements Runnable
 	private PrintWriter out;
 	Socket servSocket;
 
-	public ClientManager ( String senderName, Client recipient, Socket s ) 
+	ClientManager ( Client recipient ) 
 	{
-		this.servSocket	= s;
 		this.recipient  = recipient;
+
+		try
+		{
+			this.servSocket	= this.recipient.getServSocket().accept(); // waiting for client
+		}
+		catch ( UnknownHostException e ) { e.printStackTrace(); }
+		catch ( IOException e ) { e.printStackTrace(); }
 
 		try 
 		{
-			this.in  = new BufferedReader( new InputStreamReader( s.getInputStream()) );
-			this.out = new PrintWriter( s.getOutputStream(), true );
-
-		} catch ( IOException e ) { e.printStackTrace(); }
-
-		this.senderName = senderName;
+			this.in  = new BufferedReader( new InputStreamReader( servSocket.getInputStream()) );
+			this.out = new PrintWriter( servSocket.getOutputStream(), true );
+		}
+		catch ( IOException e ) { e.printStackTrace(); }
 	}
 
 	@Override
-    public void run() 
+	public void run() 
 	{
-		System.out.println("Connexion du client " + ((this.senderName != null) ? this.senderName : "")); // getHostName() ??
+		System.out.println("Connexion d'un client");
 
 		do
 		{
+			String[] longMessage = in.lines().collect(Collectors.joining()).split(":");
+			if ( longMessage.length == 2 )
+			{
+				this.senderName = longMessage[0];
+				String message  = longMessage[1];
+				this.recipient.addMessageHistory(this.senderName, message );
+			}
+
+			System.out.println(recipient.getHistMessages());
+			
 			try 
 			{
-				System.out.println(this.senderName + " : " + in.toString());
-				Thread.sleep(500);
+				Thread.sleep(60*10);
 			}
-			//catch (IOException ie) {}
-			catch (InterruptedException e) {}
-
+			catch (InterruptedException e) { e.printStackTrace(); }
 		} while ( !this.out.checkError() );
 
 		
@@ -49,7 +62,8 @@ class ClientManager implements Runnable
 		{
 			in.close();
 			out.close();
-		} catch ( IOException e ) {}
+		}
+		catch (IOException e) { e.printStackTrace(); }
 
 		/*
 		try
@@ -65,7 +79,7 @@ class ClientManager implements Runnable
 
 				// Affichage du message client
 				if ( m != null )
-					System.out.println( ((this.senderName != null) ? this.senderName : "Client " + GerantDeClient.nbInstance) + " : " + m);
+					System.out.println( ((this.sender != null) ? this.sender : "Client " + GerantDeClient.nbInstance) + " : " + m);
 
 
 			} while ( !this.out.checkError() );

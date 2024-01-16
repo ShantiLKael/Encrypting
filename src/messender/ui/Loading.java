@@ -25,8 +25,7 @@ public class Loading extends JFrame implements ActionListener
 {
 	private JButton btnStart;
 	private JLabel bgImage;
-	private ArrayList<JComponent> lstComponent;
-	private JLabel lblTest;
+	private JLabel lblLoad;
 
 	public Loading()
 	{
@@ -39,26 +38,26 @@ public class Loading extends JFrame implements ActionListener
 		this.setLayout(new BorderLayout());
 
 		/* Components creation */		
-		this.bgImage = new JLabel(new ImageIcon(".\\lib\\test-img.jpg"));
+		this.bgImage = new JLabel(new ImageIcon("lib/test-img.jpg"));
 		this.bgImage.setSize(width, height);
-
-		this.lstComponent = new ArrayList<JComponent>();
-		this.lstComponent.add(this.btnStart);
-		this.lstComponent.add(this.bgImage);
-		this.lstComponent.add(this.lblTest);
-
 
 		this.btnStart = new JButton("Start");
 		this.btnStart.setFocusable(false);
-		this.btnStart.setBorder(new RoundButton(10));
+
+		this.btnStart.setBorder(new RoundButton(50));
+		this.btnStart.setBackground(Color.PINK);
 		this.btnStart.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 		this.btnStart.setSize(200, 65);
-		this.btnStart.setBounds(width  / 2 - this.btnStart.getWidth () / 2, 
-								(int) (height / 1.5),
-								this.btnStart.getWidth(), this.btnStart.getHeight());
+		this.btnStart.setBounds(width / 2 - this.btnStart.getWidth () / 2, (int) (height / 1.5), this.btnStart.getWidth(), this.btnStart.getHeight());
+
+		this.lblLoad = new JLabel("HEY");
+		this.lblLoad.setVisible(false);
+		this.lblLoad.setBounds(width / 2, (int) (height / 1.5), this.btnStart.getWidth(), this.btnStart.getHeight());
 
 		/* Adding components */
 		this.bgImage.add(this.btnStart);
+		this.bgImage.add(this.lblLoad);
 		this.add(this.bgImage, BorderLayout.CENTER);
 
 		this.btnStart.addActionListener(this);
@@ -69,13 +68,13 @@ public class Loading extends JFrame implements ActionListener
 	}
 
 	@Override
-	public void paintComponents(Graphics g)
+	public void paintComponents( Graphics g )
 	{
 		super.paintComponents(g);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e)
+	public void actionPerformed( ActionEvent e )
 	{
 
 		if ( e.getSource() == this.btnStart )
@@ -83,20 +82,13 @@ public class Loading extends JFrame implements ActionListener
 			System.out.println("Start");
 			this.btnStart.setVisible(false);
 			// this.createClient();
-			int width = this.getWidth();
-			int height = this.getHeight();
 
-			this.lblTest = new JLabel("HEY");
-			this.lblTest.setBounds(width / 2,
-						  (int) (height / 1.5),
-						  this.btnStart.getWidth(), this.btnStart.getHeight());
-			this.bgImage.add(this.lblTest);
+			this.lblLoad.setVisible(true);
 		}
 	}
 
-	public static void main(String[] args)
+	public static void main( String[] args )
 	{
 		new Loading();
 	}
-
 }
