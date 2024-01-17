@@ -3,16 +3,16 @@ package messender.crypting;
 
 /**
  * @author Ashanti NJANJA - BUT Info 2
- * Date : 21/10/23
+ * Date of creation : 21/10/23
  * 
  * Cesar encrypting and decryptying methods 
  */
 
 public class Cesar
 {
-	public static final int MIN = ' ';
-	public static final int MAX = '~';
-	public static final int MODULO = Cesar.MAX - Cesar.MIN;
+	private static final int MIN = ' ';
+	private static final int MAX = '~';
+	private static final int MODULO = Cesar.MAX - Cesar.MIN;
 
 	public static String encrypt( String m, char key )
 	{

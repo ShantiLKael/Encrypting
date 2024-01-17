@@ -19,7 +19,6 @@ public class Client1
 		while (true)
 		{
 			c2.receiveMessage(); 
-			System.out.println(c2.getHistMessages());
 		}
 	}
 

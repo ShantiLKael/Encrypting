@@ -2,16 +2,16 @@ package messender.crypting;
 
 /**
  * @author Ashanti NJANJA - BUT Info 2
- * Date : 22/11/23
+ * Date of creation : 22/11/23
  * 
  * Affine encrypting and decryptying methods 
  */
 
 public class Affine
 {
-	public static final int MIN = ' ';
-	public static final int MAX = '~';
-	public static final int MODULO = Affine.MAX - Affine.MIN;
+	private static final int MIN = ' ';
+	private static final int MAX = '~';
+	private static final int MODULO = Affine.MAX - Affine.MIN;
 	
 	private int multiplier;
 	private int term;
@@ -20,12 +20,12 @@ public class Affine
 	/**
 	 * Define the encrypting function which form is : a.X + b
 	 * @param a the multiplier
-	 * @param b the term
+	 * @param x the term
 	 */
-	private Affine( int a,  int b )
+	private Affine( int multiplier,  int x )
 	{
-		this.multiplier = a;
-		this.term = b;
+		this.multiplier = multiplier;
+		this.term = x;
 
 		// Finds the inverse of the multiplier 
 		for ( int i = 0; i < Affine.MODULO; i++ )
@@ -40,17 +40,31 @@ public class Affine
 	 * value (it needs to be an invertible element in Z/ {@code MODULO}Z .
 	 * Return null if the value is wrong.
 	 * @param a multiplier
-	 * @param b term 
+	 * @param x term 
 	 */
-	public static Affine createFunction ( int a, int b )
+	public static Affine createFunction ( int multiplier, int x )
 	{
-		if ( Crypto.PGCD(a, Affine.MODULO) != 1 ) return null;
-		return new Affine(a, b);
+		if ( Crypto.PGCD(multiplier, Affine.MODULO) != 1 ) return null;
+		return new Affine(multiplier, x);
 	}
 
-	public int getMultiplier() { return multiplier; }
-	public int getTerm		() { return term; }
-	public int getM_inv		() { return m_inv; }
+	/**
+	 * Define randoms and correct number for the 
+	 * @param a multiplier
+	 * @param x term 
+	 */
+	public static Affine createFunction()
+	{
+		int multiplier, x;
+		do
+		{
+			multiplier = (int)(Math.random() * Affine.MODULO);
+			x = (int)(Math.random() * Affine.MODULO);
+
+		} while ( Affine.createFunction(multiplier, x) == null );
+
+		return new Affine(multiplier, x);
+	}
 
 	/**
 	 * The encrypting method of Affine : a.X + b thats
@@ -74,10 +88,9 @@ public class Affine
 		return iM;
 	}
 
-
 	/**
 	 * The decrypting method of Affine that returns the 
-	 * original message
+	 * original message using the invertible number of the multiplier
 	 * @param m encrypted message
 	 */
 	public String decrypt( String m )
@@ -101,7 +114,7 @@ public class Affine
 	 * This function returns a random number of the invertible 
 	 * number of Z/ModZ
 	 */
-	public static int randomInvertible()
+	private static int randomInvertible()
 	{
 		int[] invertibles = new int [ Affine.MODULO / 2 ];
 		int nbInvertible = 0;
@@ -110,6 +123,12 @@ public class Affine
 			if ( Crypto.PGCD(i, Affine.MODULO) == 1 ) invertibles[ nbInvertible++ ] = i;
 
 		return invertibles[ (int) ( Math.random() * nbInvertible ) ];
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Affine [multiplier=" + multiplier + ", term=" + term + ", m_inv=" + m_inv + "]";
 	}
 
 	public static void main(String[] args)

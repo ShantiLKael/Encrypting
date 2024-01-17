@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Map;
+
+import messender.crypting.Affine;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +18,9 @@ public class Client
 	private String name;
 	private String host;
 	private int    port;
-
 	private ServerSocket servSocket;
+
+	private Affine messageEncoder;
 
 	private List<Client> friends;
 	private Map<String, List<String>> histMessages;
@@ -26,17 +29,21 @@ public class Client
 	{
 		this.name = name;
 		this.host = host;
+		this.port = port;
+		
 		this.friends  = new LinkedList<Client>();
 		this.histMessages = new HashMap <String, List<String>>();
 
-		this.port = port;
+		for (int i = 0; 
+			 i < this.name.length() && (this.messageEncoder = Affine.createFunction( i + this.name.charAt(0), this.port )) == null ;
+			 i++);
 
 		if ( createServ )
 			try
 			{
 				this.servSocket = new ServerSocket(this.port);
 			}
-			catch (java.net.ConnectException a) { System.out.println("this user already exists."); }
+			catch (java.net.BindException e) { System.out.println("You cannot use this port, somebody already uses it\n\n." + e); }
 			catch (IOException e) { e.printStackTrace(); }
 	}
 
@@ -66,7 +73,7 @@ public class Client
 	 * @param receiver
 	 * @param message message
 	 */
-	void sendMessage( String receiverHost, int receiverPort, String message )
+	public void sendMessage( String receiverHost, int receiverPort, String message )
 	{
 		try 
 		{
@@ -76,12 +83,34 @@ public class Client
 			Socket toServ = new Socket(receiverHost, receiverPort);
 
 			PrintWriter out = new PrintWriter(toServ.getOutputStream(), false);
-			out.println( this.name + ":" + message);
+			out.println( this.name + "@" + this.port + ":" + this.messageEncoder.encrypt(message));
 
 			out.close();
 			toServ.close();
-		} 
+		}
+		catch (java.net.ConnectException e) { System.out.println("Your reaching fella disconnected.\n" + e);}
 		catch (IOException e) { e.printStackTrace(); }
+	}
+
+	/**
+	 * This function makes the client wait for a new message.
+	 * It creates a server and uses a thread to be able to receive multiple messages
+	 * at once. This function needs to be used in a while loop in order to intercept 
+	 * messages at any time.
+	 */
+	public void receiveMessage()
+	{
+	
+		System.out.println(this.name + " receiving message...");
+		
+		// instantiate a ClientManager to process the client's requests
+		ClientManager receiving = new ClientManager(this);
+
+		// putting the manager un a Thread
+		Thread tgdc = new Thread(receiving);
+
+		// launch thread that will manage client
+		tgdc.start();
 	}
 
 	/**
@@ -97,36 +126,23 @@ public class Client
 		this.histMessages.get(senderName).add(m);
 	}
 
-	/**
-	 * This function makes the client wait for a new message.
-	 * It creates a server and uses a thread to be able to receive multiple messages
-	 * at once. This function needs to be used in a while loop in order to intercept 
-	 * messages at any time.
-	 */
-	void receiveMessage()
-	{
-	
-		System.out.println(this.name + " receiving message...");
-		
-		// instantiate a ClientManager to process the client's requests
-		ClientManager receiving = new ClientManager(this);
-
-		// putting the manager un a Thread
-		Thread tgdc = new Thread(receiving);
-
-		// launch thread that will manage client
-		tgdc.start();
-	}
-
-
-	boolean isFriend ( Client c ) { return this.friends.contains(c); }
-	void   addFriend( Client c ) 
+	public void addFriend( Client c ) 
 	{
 		if ( !this.isFriend(c) )
 		{
 			this.friends.add(c); 
 			c.friends.add(this);
 		}
+	}
+
+	boolean isFriend ( Client c )
+	{
+		return this.friends.contains(c);
+	}
+
+	String decrypt( String message )
+	{
+		return this.messageEncoder.decrypt(message);
 	}
 
 	@Override
@@ -154,11 +170,11 @@ public class Client
 		Client c1 = new Client("Justine", 6000);
 		Client c3 = new Client("Ali", 9001);
 
-		for ( int i = 0; i < 5; i++)
+		for ( int i = 0; i < 1; i++)
 		{
 			try
 			{
-				Thread.sleep(600*5);
+				Thread.sleep(600*2);
 			}
 			catch (InterruptedException e) { e.printStackTrace(); }
 			
@@ -166,15 +182,15 @@ public class Client
 		}
 
 
-		for ( int i = 0; i < 5; i++)
+		for ( int i = 0; i < 1; i++)
 		{
 			try
 			{
-				Thread.sleep(600*5);
+				Thread.sleep(600*2);
 			}
 			catch (InterruptedException e) { e.printStackTrace(); }
 			
-			c3.sendMessage("localhost", 9000, "hello");
+			c3.sendMessage("localhost", 9000, "wassup");
 		}
 	}
 }
