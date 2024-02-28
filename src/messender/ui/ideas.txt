@@ -18,7 +18,7 @@
 [SEND]
     - list of the different friend
     - you can choose to discuss with a friend
-    - when you click to 
+    - verifies if friend online
 
 [ADD]
     - you will need a hostname and port to send a friend request

@@ -19,11 +19,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.BindException;
 
-public class Loading extends JFrame implements ActionListener
+public class HomePage extends JFrame implements ActionListener
 {
 
-	static final int WIDTH  = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth () / 2);
+	static final int WIDTH  = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth () / 1.5);
 	static final int HEIGHT = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1.5);
+
+	static final String WRONG_PORT = "Your port is incorrect";
+	static final String WRONG_HOSTNAME = "Your hostname is incorrect";
+	static final String NEW_SESSION = "New session created";
+
+	static Session session;
 
 	private JButton btnStart;
 	private JLabel bgImage;
@@ -35,7 +41,7 @@ public class Loading extends JFrame implements ActionListener
 
 	private JCheckBox additionalSettings;
 
-	public Loading()
+	public HomePage()
 	{
 		this.setSize(Loading.WIDTH, Loading.HEIGHT);
 		this.setLocationRelativeTo(null); // center of the screen
@@ -96,7 +102,7 @@ public class Loading extends JFrame implements ActionListener
 	public void actionPerformed( ActionEvent event )
 	{
 		// TODO : try to use DocumentListener for port entry
-
+		
 		if ( event.getSource() == this.btnStart )
 		{
 			this.btnStart.setVisible(false);
@@ -105,16 +111,19 @@ public class Loading extends JFrame implements ActionListener
 			{
 				if ( validEntry() )
 				{
-					this.createSession( "testSession", "localhost", Integer.parseInt(this.txtPort.getText()));
-					newSessionPopUp();
+					String clientName = this.txtName.getText().isEmpty() ? "localhost" : this.txtName.getText();
+					int port = Integer.parseInt(this.txtPort.getText());
+
+					this.session = createClient(clientName, port);
+					openApp();
 				}
 				else
-					JOptionPane.showMessageDialog( this, "The port must be a number", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog( this, HomePage.WRONG_PORT, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else
 			{
-				this.createSession( "testSession", "localhost", 0);
-				newSessionPopUp();
+				this.session = createClient( "localhost", 0);
+				openApp();
 			}		
 		}
 
@@ -123,6 +132,7 @@ public class Loading extends JFrame implements ActionListener
 			if ( this.additionalSettings.isSelected())
 			{
 				this.setSize(Loading.WIDTH, Loading.HEIGHT + Loading.HEIGHT /10 );
+				// TODO Here I need to repaint the screen
 				this.setLocationRelativeTo(null);
 				this.panelBottom.setVisible(true);
 			}
@@ -138,46 +148,49 @@ public class Loading extends JFrame implements ActionListener
 	/**
 	 * Return false if the name is empty and null if the port isn't convertible in int
 	 */
-	private Boolean validEntry()
+	private boolean validEntry()
 	{
 		try
 		{
 			Integer.parseInt(this.txtPort.getText());
 			return (!this.txtName.getText().isEmpty());
 		}
-		catch (Exception e)
-		{
-			return null;
-		}
+		catch (Exception e) { return false; }
 	}
 
-	private Session createSession( String name, String host, int port )
+	private Session createClient( String name, int port )
 	{
 		try 
 		{
-			return new Session(name, host, port);
+			return new Session(name, port, true);
 		}
 		catch (BindException e)
 		{
 			int userChoice = JOptionPane.showConfirmDialog(this,
-			"This port is already in use. We will create a new port automaticaaly\nContinue ? ", 
-			"Confirm ",
+			HomePage.WRONG_PORT + "\nContinue ? ", 
+			"Confirm",
 			JOptionPane.YES_NO_OPTION);
 
-			if ( userChoice == 0 )
-				return createSession(name, host, port +1);
+			if ( userChoice == JOptionPane.YES_OPTION )
+				return createClient(name, port +1);
 			else
 				return null;
 		}
 	}
 
-	private void newSessionPopUp()
+	private void openApp()
 	{
-		JOptionPane.showMessageDialog( this, "New session created", "", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(
+			this, HomePage.NEW_SESSION, "", JOptionPane.INFORMATION_MESSAGE
+		);
 	}
 
 	public static void main( String[] args )
 	{
-		new Loading();
+		HomePage hp = new HomePage();
+		while (true)
+		{
+			System.out.println(hp.session);
+		}
 	}
 }
