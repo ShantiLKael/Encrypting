@@ -19,8 +19,6 @@ public class Session extends Client
 {
 	private ServerSocket servSocket;
 
-	private Affine messageEncoder;
-
 	private List<Client> friends;
 	private Map<String, List<String>> histMessages;
 
@@ -31,11 +29,6 @@ public class Session extends Client
 		
 		this.friends  = new LinkedList<Client>();
 		this.histMessages = new HashMap <String, List<String>>();
-
-		for (int i = 0; 
-			 i < this.name.length() &&
-			 (this.messageEncoder = Affine.createFunction( i + this.name.charAt(0), this.port )) == null;
-			 i++);
 
 		if ( createServ )
 			try
@@ -67,7 +60,7 @@ public class Session extends Client
 	 * @param receiver
 	 * @param message message
 	 */
-	public void sendMessage( Session receiver, String message )
+	public void sendMessage( Client receiver, String message ) throws ConnectException
 	{
 		try 
 		{
@@ -76,14 +69,13 @@ public class Session extends Client
 			// Connecting to the server of the receiver
 			Socket toServ = new Socket(receiver.host, receiver.port);
 
-			PrintWriter out = new PrintWriter(toServ.getOutputStream(), false);
+			PrintWriter out = new PrintWriter(toServ.getOutputStream(), false); // FullMessage => name @ port : message
 			out.println( this.name + "@" + this.port + ":" + this.messageEncoder.encrypt(message));
 			this.addMessageHistory(receiver.name, message);
 
 			out.close();
 			toServ.close();
 		}
-		catch (ConnectException e) { System.out.println("Your reaching fella disconnected.\n" + e);}
 		catch (IOException e) { e.printStackTrace(); }
 	}
 
@@ -132,11 +124,6 @@ public class Session extends Client
 		return this.friends.contains(c);
 	}
 
-	String decrypt( String message )
-	{
-		return this.messageEncoder.decrypt(message);
-	}
-
 	@Override
 	public boolean equals( Object o ) 
 	{
@@ -144,10 +131,22 @@ public class Session extends Client
 		return this.name.equals(c.name) && this.port == c.port;
 	}
 
-	String getName() { return this.name; }
-	Map<String,List<String>> getHistMessages() { return this.histMessages; }
-	List<Client> getFriends() { return this.friends; }
-	ServerSocket getServSocket() { return this.servSocket; }
+	public void delFriend(String name) 
+	{
+		for ( int i=0; i < friends.size(); i++ )
+		{
+			Client c = friends.get(i);
+			if ( c.getName().equals(name) || c.getNickname().equals(name) )
+				friends.remove(i);
+		}
+	}
+
+	public String getName() { return this.name; }
+	public Map<String,List<String>> getHistMessages() { return this.histMessages; }
+	public List<Client> getFriends() { return this.friends; }
+	public ServerSocket getServSocket() { return this.servSocket; }
+
+	public void setFriends(List<Client> friendList) { this.friends = friendList;}
 
 
 	@Override
@@ -176,7 +175,12 @@ public class Session extends Client
 			}
 			catch (InterruptedException e) { e.printStackTrace(); }
 			
-			c1.sendMessage(c2, "wassup");
+			try {
+				c1.sendMessage(c2, "wassup");
+			} catch (ConnectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 
@@ -188,7 +192,12 @@ public class Session extends Client
 			}
 			catch (InterruptedException e) { e.printStackTrace(); }
 			
-			c3.sendMessage(c2, "hello");
+			try {
+				c3.sendMessage(c2, "hello");
+			} catch (ConnectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

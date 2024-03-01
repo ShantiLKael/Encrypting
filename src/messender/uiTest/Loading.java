@@ -1,4 +1,4 @@
-package messender.ui;
+package messender.uiTest;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,7 +23,13 @@ public class Loading extends JFrame implements ActionListener
 {
 
 	static final int WIDTH  = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth () / 2);
-	static final int HEIGHT = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1.5);
+	static final int HEIGHT = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2);
+
+	static final String WRONG_PORT = "Your port is incorrect";
+	static final String WRONG_HOSTNAME = "Your hostname is incorrect";
+	static final String NEW_SESSION = "New session created";
+
+	static Session session;
 
 	private JButton btnStart;
 	private JLabel bgImage;
@@ -39,6 +45,10 @@ public class Loading extends JFrame implements ActionListener
 	{
 		this.setSize(Loading.WIDTH, Loading.HEIGHT);
 		this.setLocationRelativeTo(null); // center of the screen
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.setVisible(true);
+
 		this.setLayout(new BorderLayout());
 
 		/* Components creation */
@@ -47,7 +57,7 @@ public class Loading extends JFrame implements ActionListener
 
 		this.additionalSettings = new JCheckBox(" | Additional settings");
 
-		this.bgImage = new JLabel(new ImageIcon("lib/test-img.jpg"));
+		this.bgImage = new JLabel(new ImageIcon("images/test-img.jpg"));
 		this.bgImage.setSize(Loading.WIDTH, Loading.HEIGHT);
 
 		this.btnStart = new JButton("Start");
@@ -56,7 +66,7 @@ public class Loading extends JFrame implements ActionListener
 		this.btnStart.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		this.btnStart.setSize(200, 65);
-		this.btnStart.setBounds(Loading.WIDTH / 2 - this.btnStart.getWidth () / 2, (int) (Loading.HEIGHT / 1.5), this.btnStart.getWidth(), this.btnStart.getHeight());
+		this.btnStart.setBounds( (int) (Loading.WIDTH / 2.5 - this.btnStart.getWidth () / 2.5), Loading.HEIGHT / 2, this.btnStart.getWidth(), this.btnStart.getHeight());
 
 		/* Adding components */
 		this.bgImage.add(this.btnStart);
@@ -86,17 +96,13 @@ public class Loading extends JFrame implements ActionListener
 
 		this.btnStart.addActionListener(this);
 		this.additionalSettings.addActionListener(this);
-
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setResizable(false);
-		this.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed( ActionEvent event )
 	{
 		// TODO : try to use DocumentListener for port entry
-
+		
 		if ( event.getSource() == this.btnStart )
 		{
 			this.btnStart.setVisible(false);
@@ -105,16 +111,19 @@ public class Loading extends JFrame implements ActionListener
 			{
 				if ( validEntry() )
 				{
-					this.createSession( "testSession", "localhost", Integer.parseInt(this.txtPort.getText()));
-					newSessionPopUp();
+					String clientName = this.txtName.getText().isEmpty() ? "user" : this.txtName.getText();
+					int port = Integer.parseInt(this.txtPort.getText());
+
+					this.session = createClient(clientName, "localhost", port);
+					openApp();
 				}
 				else
-					JOptionPane.showMessageDialog( this, "The port must be a number", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog( this, Loading.WRONG_PORT, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else
 			{
-				this.createSession( "testSession", "localhost", 0);
-				newSessionPopUp();
+				this.session = createClient( "sessionTest", "localhost", 0);
+				openApp();
 			}		
 		}
 
@@ -123,6 +132,7 @@ public class Loading extends JFrame implements ActionListener
 			if ( this.additionalSettings.isSelected())
 			{
 				this.setSize(Loading.WIDTH, Loading.HEIGHT + Loading.HEIGHT /10 );
+				// TODO Here I need to repaint the screen
 				this.setLocationRelativeTo(null);
 				this.panelBottom.setVisible(true);
 			}
@@ -138,20 +148,17 @@ public class Loading extends JFrame implements ActionListener
 	/**
 	 * Return false if the name is empty and null if the port isn't convertible in int
 	 */
-	private Boolean validEntry()
+	private boolean validEntry()
 	{
 		try
 		{
 			Integer.parseInt(this.txtPort.getText());
 			return (!this.txtName.getText().isEmpty());
 		}
-		catch (Exception e)
-		{
-			return null;
-		}
+		catch (Exception e) { return false; }
 	}
 
-	private Session createSession( String name, String host, int port )
+	private Session createClient( String name, String host, int port )
 	{
 		try 
 		{
@@ -160,24 +167,26 @@ public class Loading extends JFrame implements ActionListener
 		catch (BindException e)
 		{
 			int userChoice = JOptionPane.showConfirmDialog(this,
-			"This port is already in use. We will create a new port automaticaaly\nContinue ? ", 
-			"Confirm ",
+			Loading.WRONG_PORT + "\nContinue ? ", 
+			"Confirm",
 			JOptionPane.YES_NO_OPTION);
 
-			if ( userChoice == 0 )
-				return createSession(name, host, port +1);
+			if ( userChoice == JOptionPane.YES_OPTION )
+				return createClient(name, host, port +1);
 			else
 				return null;
 		}
 	}
 
-	private void newSessionPopUp()
+	private void openApp()
 	{
-		JOptionPane.showMessageDialog( this, "New session created", "", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(
+			this, Loading.NEW_SESSION, "", JOptionPane.INFORMATION_MESSAGE
+		);
 	}
 
 	public static void main( String[] args )
 	{
-		new Loading();
+		Loading hp = new Loading();
 	}
 }

@@ -49,19 +49,20 @@ class MessageReceiver implements Runnable
 
 		try 
 		{
+			// FullMessage => name @ port : message
 			String[] fullMessage = in.lines().collect(Collectors.joining()).split(":");
 			if ( fullMessage.length == 2 )
 			{
 				String[] senderInfo = fullMessage[0].split("@");
-				Session sender = new Session(senderInfo[0], Integer.parseInt(senderInfo[1]), false);
+				String senderName = senderInfo[0];
+				int    port = Integer.parseInt(senderInfo[1]);
+				String message = Client.decrypt(senderName, port, fullMessage[1]);
 
-				String message = sender.decrypt(fullMessage[1]);
-				this.session.addMessageHistory(sender.getName(), message );
+				this.session.addMessageHistory(senderName, message );
 			}
 
-			System.out.println(session.getHistMessages());
+			System.out.println(session.getHistMessages()); // TODO remove delete
 			
-		
 			servSocket.close();
 			in.close();
 			out.close();

@@ -1,4 +1,4 @@
-package messender.ui;
+package messender.uiTest;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -12,9 +12,9 @@ public class NavBar extends JPanel implements ActionListener
     private JButton sendMenu;
 	private JButton addMenu;
 	private JButton themeMenu;
-	private HomePage mainFrame;
+	private Loading mainFrame;
 
-	public NavBar(HomePage homepg)
+	public NavBar(Loading homepg)
 	{
 		// Creating components
 		this.addMenu = new JButton("Add");

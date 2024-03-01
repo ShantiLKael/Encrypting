@@ -26,6 +26,7 @@
     - notify when you foud someone
     - while the friend request isnt accepted, the reciever wont recieve the messages
     - waiting list of people you asked to become friend
+    - surname possible (needs to be unique) 
 
 [THEMES]
     There will be multiple themes a pink one, blue one and trans one + a personnable one :D 
