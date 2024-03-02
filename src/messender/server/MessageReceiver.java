@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.stream.Collectors;
 
-class MessageReceiver implements Runnable
+class MessageReceiver extends Thread
 {
 	private Session session;
 	private BufferedReader in;

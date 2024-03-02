@@ -20,6 +20,7 @@ public class Session extends Client
 	private ServerSocket servSocket;
 
 	private List<Client> friends;
+	private List<Client> friendRequest;
 	private Map<String, List<String>> histMessages;
 
 	// the parameters 'createServ' is here just for the tests, it will be deleted later
@@ -28,6 +29,7 @@ public class Session extends Client
 		super(name, host, port);
 		
 		this.friends  = new LinkedList<Client>();
+		this.friendRequest = new LinkedList<Client>();
 		this.histMessages = new HashMap <String, List<String>>();
 
 		if ( createServ )
@@ -88,14 +90,10 @@ public class Session extends Client
 	public void receiveMessage()
 	{
 		System.out.println(this.name + " receiving message...");
-		
 		MessageReceiver receiving = new MessageReceiver(this);
 
-		// putting the manager un a Thread
-		Thread tgdc = new Thread(receiving);
-
-		// launch thread that will manage client
-		tgdc.start();
+		// launch thread that will manage recieved messages
+		receiving.start();
 	}
 
 	/**
@@ -145,6 +143,8 @@ public class Session extends Client
 	public Map<String,List<String>> getHistMessages() { return this.histMessages; }
 	public List<Client> getFriends() { return this.friends; }
 	public ServerSocket getServSocket() { return this.servSocket; }
+	public List<Client> getFriendRequest() { return this.friendRequest; }
+
 
 	public void setFriends(List<Client> friendList) { this.friends = friendList;}
 

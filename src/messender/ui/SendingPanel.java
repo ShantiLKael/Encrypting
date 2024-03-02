@@ -41,6 +41,7 @@ public class SendingPanel extends JPanel implements ActionListener
         this.setRequestFocusEnabled(false);
         this.setLayout(null);
 
+        // creating components
         JPanel messagePanel = new JPanel();
         messagePanel.setBackground(new Color(242, 193, 193));
         messagePanel.setBorder(BorderFactory.createLineBorder(new Color(229, 185, 185), 2));
@@ -92,7 +93,7 @@ public class SendingPanel extends JPanel implements ActionListener
         });
         friendList.setSelectionBackground(new Color(255, 168, 168));
 
-        JPanel topleftPanel= new JPanel();
+        JPanel topleftPanel = new JPanel();
         topleftPanel.setBackground(new Color(250, 194, 194));
 
         JLabel friendListLbl = new JLabel("Friend                    ");
@@ -106,10 +107,9 @@ public class SendingPanel extends JPanel implements ActionListener
         errorSendingLbl.setFont(new Font("Bahnschrift", 0, 12)); // NOI18N
         errorSendingLbl.setForeground(new Color(255, 102, 0));
 
-        // Placing components
+        // placing components
         topleftPanel.add(friendListLbl);
         topleftPanel.add(delFriendBtn);
-
         leftPanel.add(friendList, BorderLayout.CENTER);
         leftPanel.add(topleftPanel, BorderLayout.NORTH);
 
@@ -122,8 +122,7 @@ public class SendingPanel extends JPanel implements ActionListener
         this.add(errorSendingLbl);
         errorSendingLbl.setBounds(220, 450, 466, 15);
 
-        // Adding listeners
-        
+        // adding listeners
         sendMessBtn.addActionListener(this);
         delFriendBtn.addActionListener(this);   
     }

@@ -136,6 +136,7 @@ public class SenderPage extends javax.swing.JFrame {
         upperBar.setBounds(0, 0, 800, 50);
 
         SendingPanel sendingP;
+        AddFriendPanel addFriendP;
 
 
 
@@ -154,133 +155,6 @@ public class SenderPage extends javax.swing.JFrame {
         
         mainFrame.add(contentPage);
         contentPage.setBounds(0, 50, 800, 550);
-
-        addFriendPanel.setBackground(new java.awt.Color(255, 234, 233));
-        addFriendPanel.setMinimumSize(new java.awt.Dimension(800, 600));
-        addFriendPanel.setLayout(null);
-
-        portLbl.setFont(new java.awt.Font("Bahnschrift", 1, 14)); // NOI18N
-        portLbl.setForeground(new java.awt.Color(204, 105, 119));
-        portLbl.setText("Port");
-        addFriendPanel.add(portLbl);
-        portLbl.setBounds(260, 80, 50, 20);
-
-        portField.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        portField.setSelectedTextColor(new java.awt.Color(193, 187, 234));
-        portField.setSelectionColor(new java.awt.Color(193, 187, 234));
-        portField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                portFieldActionPerformed(evt);
-            }
-        });
-        addFriendPanel.add(portField);
-        portField.setBounds(260, 100, 210, 30);
-
-        nameLbl.setFont(new java.awt.Font("Bahnschrift", 1, 14)); // NOI18N
-        nameLbl.setForeground(new java.awt.Color(204, 105, 119));
-        nameLbl.setText("Name");
-        addFriendPanel.add(nameLbl);
-        nameLbl.setBounds(540, 80, 50, 18);
-
-        nameField.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        nameField.setSelectedTextColor(new java.awt.Color(193, 187, 234));
-        nameField.setSelectionColor(new java.awt.Color(193, 187, 234));
-        nameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameFieldActionPerformed(evt);
-            }
-        });
-        addFriendPanel.add(nameField);
-        nameField.setBounds(540, 100, 210, 30);
-
-        hostLbl.setFont(new java.awt.Font("Bahnschrift", 1, 14)); // NOI18N
-        hostLbl.setForeground(new java.awt.Color(204, 105, 119));
-        hostLbl.setText("Host");
-        addFriendPanel.add(hostLbl);
-        hostLbl.setBounds(260, 200, 50, 18);
-
-        hostField.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        hostField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        hostField.setSelectedTextColor(new java.awt.Color(193, 187, 234));
-        hostField.setSelectionColor(new java.awt.Color(193, 187, 234));
-        hostField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hostFieldActionPerformed(evt);
-            }
-        });
-        addFriendPanel.add(hostField);
-        hostField.setBounds(260, 220, 210, 30);
-
-        nicknameLbl.setFont(new java.awt.Font("Bahnschrift", 1, 14)); // NOI18N
-        nicknameLbl.setForeground(new java.awt.Color(204, 105, 119));
-        nicknameLbl.setText("Nickname (Optional)");
-        addFriendPanel.add(nicknameLbl);
-        nicknameLbl.setBounds(540, 200, 150, 18);
-
-        nicknameField.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        nicknameField.setSelectedTextColor(new java.awt.Color(193, 187, 234));
-        nicknameField.setSelectionColor(new java.awt.Color(193, 187, 234));
-        nicknameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nicknameFieldActionPerformed(evt);
-            }
-        });
-        addFriendPanel.add(nicknameField);
-        nicknameField.setBounds(540, 220, 210, 30);
-
-        addFriendBtn.setBackground(new java.awt.Color(193, 187, 234));
-        addFriendBtn.setIcon(new javax.swing.ImageIcon("images/icons/plus.png")); // NOI18N
-        addFriendBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        addFriendBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addFriendBtnActionPerformed(evt);
-            }
-        });
-        addFriendPanel.add(addFriendBtn);
-        addFriendBtn.setBounds(700, 270, 50, 40);
-
-        errorAddFriendLbl.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
-        errorAddFriendLbl.setForeground(new java.awt.Color(255, 102, 0));
-        errorAddFriendLbl.setText("Error");
-        addFriendPanel.add(errorAddFriendLbl);
-        errorAddFriendLbl.setBounds(260, 280, 360, 15);
-
-        leftPanel.setLayout(new java.awt.BorderLayout());
-
-        friendRequestList.setBackground(new java.awt.Color(250, 215, 215));
-        friendRequestList.setBorder(null);
-        friendRequestList.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
-        friendRequestList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        leftPanel.add(friendRequestList, java.awt.BorderLayout.CENTER);
-
-        topLeftPanel.setBackground(new java.awt.Color(250, 194, 194));
-
-        friendRequestListLbl.setFont(new java.awt.Font("Nirmala UI", 1, 16)); // NOI18N
-        friendRequestListLbl.setForeground(new java.awt.Color(226, 90, 90));
-        friendRequestListLbl.setText("Friend Request List");
-        topLeftPanel.add(friendRequestListLbl);
-        friendRequestListLbl.getAccessibleContext().setAccessibleName("Friend Request");
-
-        acceptFriendBtn.setBackground(new java.awt.Color(255, 102, 102));
-        acceptFriendBtn.setIcon(new javax.swing.ImageIcon("images/icons/plus-minus.png")); // NOI18N
-        acceptFriendBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                acceptFriendBtnActionPerformed(evt);
-            }
-        });
-        topLeftPanel.add(acceptFriendBtn);
-
-        leftPanel.add(topLeftPanel, java.awt.BorderLayout.NORTH);
-
-        addFriendPanel.add(leftPanel);
-        leftPanel.setBounds(0, 0, 210, 550);
-
-        mainFrame.add(addFriendPanel);
-        addFriendPanel.setBounds(0, 50, 800, 550);
 
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
