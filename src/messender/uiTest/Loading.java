@@ -57,7 +57,7 @@ public class Loading extends JFrame implements ActionListener
 
 		this.additionalSettings = new JCheckBox(" | Additional settings");
 
-		this.bgImage = new JLabel(new ImageIcon("images/test-img.jpg"));
+		this.bgImage = new JLabel(new ImageIcon("icons/test-img.jpg"));
 		this.bgImage.setSize(Loading.WIDTH, Loading.HEIGHT);
 
 		this.btnStart = new JButton("Start");

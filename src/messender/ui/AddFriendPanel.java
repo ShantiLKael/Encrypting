@@ -10,6 +10,7 @@ package messender.ui;
 import javax.swing.*;
 
 import messender.server.Client;
+import messender.icons.*;
 import messender.server.Session;
 
 import java.awt.BorderLayout;
@@ -78,7 +79,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
         nicknameField.setSelectedTextColor(new Color(193, 187, 234));
         nicknameField.setSelectionColor(new Color(193, 187, 234));
         
-        addFriendBtn = new JButton(new ImageIcon("icons/plus.png"));
+        addFriendBtn = new JButton(new ImageIcon("/icons/plus.png"));
         addFriendBtn.setBackground(new Color(193, 187, 234));
         addFriendBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -114,7 +115,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
         leftPanel.setLayout(new BorderLayout());
         topLeftPanel.setBackground(new Color(250, 194, 194));
 
-        acceptFriendBtn = new JButton(new ImageIcon("icons/plus-minus.png"));
+        acceptFriendBtn = new JButton(new ImageIcon("/icons/plus-minus.png"));
         acceptFriendBtn.setBackground(new Color(255, 102, 102));
 
         topLeftPanel.add(friendRequestListLbl);

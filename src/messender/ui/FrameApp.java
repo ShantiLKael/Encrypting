@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.net.BindException;
 import javax.swing.*;
 
+import messender.icons.*;
 import messender.server.Session;
 
 /**
@@ -54,28 +55,28 @@ public class FrameApp extends JFrame implements ActionListener
         sendMenu = new JButton();
         sendMenu.setBackground(HEADER_COLOR);
         sendMenu.setFont(HEADER_FONT);
-        sendMenu.setIcon(new ImageIcon(getClass().getResource("/icon/sent.png")));
+        sendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/sent.png")));
         sendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
         this.setAllDimension(sendMenu, btnHeaderBtn);
 
         addFriendMenu = new JButton();
         addFriendMenu.setBackground(HEADER_COLOR);
         addFriendMenu.setFont(HEADER_FONT);
-        addFriendMenu.setIcon(new ImageIcon(getClass().getResource("/icon/friend.png")));
+        addFriendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/friend.png")));
         addFriendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
         this.setAllDimension(addFriendMenu, btnHeaderBtn);
 
         themeMenu = new JButton();
         themeMenu.setBackground(HEADER_COLOR);
         themeMenu.setFont(HEADER_FONT);
-        themeMenu.setIcon(new ImageIcon(getClass().getResource("/icon/theme.png")));
+        themeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/theme.png")));
         themeMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
         this.setAllDimension(themeMenu, btnHeaderBtn);
 
         homeMenu = new JButton();
         homeMenu.setBackground(HEADER_COLOR);
         homeMenu.setFont(HEADER_FONT);
-        homeMenu.setIcon(new ImageIcon(getClass().getResource("/icon/home.png")));
+        homeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/home.png")));
         homeMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
         this.setAllDimension(homeMenu, btnHeaderBtn);
         

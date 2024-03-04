@@ -9,6 +9,7 @@ package messender.ui;
 
 import javax.swing.*;
 
+import messender.icons.*;
 import messender.server.Client;
 import messender.server.Session;
 
@@ -46,7 +47,7 @@ public class SendingPanel extends JPanel implements ActionListener
         messagePanel.setBackground(new Color(242, 193, 193));
         messagePanel.setBorder(BorderFactory.createLineBorder(new Color(229, 185, 185), 2));
 
-        sendMessBtn = new JButton( new ImageIcon("icons/sent-minus.png") );
+        sendMessBtn = new JButton( new ImageIcon("/icons/sent-minus.png") );
         sendMessBtn.setBackground(new Color(193, 187, 234));
 
         messageField = new JTextField("Text here...");
@@ -101,7 +102,7 @@ public class SendingPanel extends JPanel implements ActionListener
         friendListLbl.setFont(new Font("Nirmala UI", 1, 16)); // NOI18N
         friendListLbl.setForeground(new Color(226, 90, 90));
 
-        delFriendBtn = new JButton(new ImageIcon("icons/bin.png"));
+        delFriendBtn = new JButton(new ImageIcon("/icons/bin.png"));
         delFriendBtn.setBackground(new Color(255, 102, 102));
 
         errorSendingLbl = new JLabel("Error");
