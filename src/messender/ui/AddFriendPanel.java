@@ -40,7 +40,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
     {
         session = s;
 
-        this.setBackground(new Color(255, 234, 233));
+        this.setBackground(FrameApp.CONTENT_BGCOLOR);
         this.setMinimumSize(new Dimension(800, 600));
         this.setLayout(null);
 
@@ -78,7 +78,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
         nicknameField.setSelectedTextColor(new Color(193, 187, 234));
         nicknameField.setSelectionColor(new Color(193, 187, 234));
         
-        addFriendBtn = new JButton(new ImageIcon("images/icons/plus.png"));
+        addFriendBtn = new JButton(new ImageIcon("icons/plus.png"));
         addFriendBtn.setBackground(new Color(193, 187, 234));
         addFriendBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -101,7 +101,8 @@ public class AddFriendPanel extends JPanel implements ActionListener
         for ( Client c : session.getFriendRequest() )
             friendRequestInfo.add(c.getName() + " " + c.getHost());
     
-        friendRequestList.setModel(new AbstractListModel<String>() {
+        friendRequestList.setModel(new AbstractListModel<String>()
+        {
             String[] strings = friendRequestInfo.toArray(new String[friendRequestInfo.size()]);
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -113,7 +114,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
         leftPanel.setLayout(new BorderLayout());
         topLeftPanel.setBackground(new Color(250, 194, 194));
 
-        acceptFriendBtn = new JButton(new ImageIcon("images/icons/plus-minus.png"));
+        acceptFriendBtn = new JButton(new ImageIcon("icons/plus-minus.png"));
         acceptFriendBtn.setBackground(new Color(255, 102, 102));
 
         topLeftPanel.add(friendRequestListLbl);

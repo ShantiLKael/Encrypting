@@ -36,8 +36,8 @@ public class SendingPanel extends JPanel implements ActionListener
     {
         session = s;
         
-        this.setBackground(new Color(255, 234, 233));
-        this.setPreferredSize(new Dimension(800, 600));
+        this.setBackground(FrameApp.CONTENT_BGCOLOR);
+        this.setPreferredSize(new Dimension(FrameApp.WIDTH, FrameApp.HEIGHT));
         this.setRequestFocusEnabled(false);
         this.setLayout(null);
 
@@ -46,7 +46,7 @@ public class SendingPanel extends JPanel implements ActionListener
         messagePanel.setBackground(new Color(242, 193, 193));
         messagePanel.setBorder(BorderFactory.createLineBorder(new Color(229, 185, 185), 2));
 
-        sendMessBtn = new JButton( new ImageIcon("images/icons/sent-minus.png") );
+        sendMessBtn = new JButton( new ImageIcon("icons/sent-minus.png") );
         sendMessBtn.setBackground(new Color(193, 187, 234));
 
         messageField = new JTextField("Text here...");
@@ -86,7 +86,8 @@ public class SendingPanel extends JPanel implements ActionListener
         for ( Client c : session.getFriends() )
             friendNickname.add(c.getNickname());
 
-        friendList.setModel(new AbstractListModel<String>() {
+        friendList.setModel(new AbstractListModel<String>()
+        {
             String[] strings = friendNickname.toArray(new String[friendNickname.size()]);
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -100,7 +101,7 @@ public class SendingPanel extends JPanel implements ActionListener
         friendListLbl.setFont(new Font("Nirmala UI", 1, 16)); // NOI18N
         friendListLbl.setForeground(new Color(226, 90, 90));
 
-        delFriendBtn = new JButton(new ImageIcon("images/icons/bin.png"));
+        delFriendBtn = new JButton(new ImageIcon("icons/bin.png"));
         delFriendBtn.setBackground(new Color(255, 102, 102));
 
         errorSendingLbl = new JLabel("Error");
