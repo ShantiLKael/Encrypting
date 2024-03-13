@@ -25,6 +25,7 @@ public class FrameApp extends JFrame implements ActionListener
     public static int HEIGHT = 600;
     public static Font HEADER_FONT = new Font("Nirmala UI", 1, 14);
     public static Color HEADER_COLOR = new Color(255, 132, 149);
+    public static Color HEADER_OUTLINE_COLOR = new Color(251, 163, 163);
     public static Color CONTENT_BGCOLOR = new Color(255, 234, 233);
     
     private static Session USER;
@@ -52,36 +53,32 @@ public class FrameApp extends JFrame implements ActionListener
         // Creating buttons
         Dimension btnHeaderBtn = new Dimension(84, 28);
 
-        sendMenu = new JButton();
+        sendMenu = new JButton("Send");
         sendMenu.setFocusPainted(false);
         sendMenu.setBackground(HEADER_COLOR);
         sendMenu.setFont(HEADER_FONT);
-        sendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/sent.png")));
-        sendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
+        //sendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/sent.png")));
         this.setAllDimensions(sendMenu, btnHeaderBtn);
 
-        addFriendMenu = new JButton();
+        addFriendMenu = new JButton("Friend");
         addFriendMenu.setFocusPainted(false);
         addFriendMenu.setBackground(HEADER_COLOR);
         addFriendMenu.setFont(HEADER_FONT);
-        addFriendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/friend.png")));
-        addFriendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
+        //addFriendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/friend.png")));
         this.setAllDimensions(addFriendMenu, btnHeaderBtn);
 
-        themeMenu = new JButton();
+        themeMenu = new JButton("Theme");
         themeMenu.setFocusPainted(false);
         themeMenu.setBackground(HEADER_COLOR);
         themeMenu.setFont(HEADER_FONT);
-        themeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/theme.png")));
-        themeMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
+        //themeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/theme.png")));
         this.setAllDimensions(themeMenu, btnHeaderBtn);
 
-        homeMenu = new JButton();
+        homeMenu = new JButton("Home");
         homeMenu.setFocusPainted(false);
         homeMenu.setBackground(HEADER_COLOR);
         homeMenu.setFont(HEADER_FONT);
-        homeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/home.png")));
-        homeMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
+        //homeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/home.png")));
         this.setAllDimensions(homeMenu, btnHeaderBtn);
         
         upperBar = new JPanel();
@@ -136,6 +133,7 @@ public class FrameApp extends JFrame implements ActionListener
         this.setResizable(false);
         this.pack();
         this.setVisible(true);
+        this.repaint();
     }
 
     private void setAllDimensions(JButton btn, Dimension d)
@@ -150,22 +148,22 @@ public class FrameApp extends JFrame implements ActionListener
     {
         if (e.getSource() == addFriendMenu)
         {
-            addFriendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
             contentPage.removeAll();
             contentPage.add(addFriendP);
             addFriendP.setBounds(0, 0, 800, 550);
+            addFriendP.clearError();
+
             this.revalidate();
             this.repaint();
         }
 
         if (e.getSource() == sendMenu)
         {
-            this.defaultBorder();
-            sendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
-
             contentPage.removeAll();
             contentPage.add(sendingP);
             sendingP.setBounds(0, 0, 800, 550);
+            addFriendP.clearError();
+
             this.revalidate();
             this.repaint();
         }
@@ -173,13 +171,4 @@ public class FrameApp extends JFrame implements ActionListener
         //if ( e.getSource() == themeMenu )
         //if ( e.getSource() == homeMenu )
     }
-
-    private void defaultBorder()
-    {
-        sendMenu.setBorder(BorderFactory.createLineBorder(HEADER_COLOR));
-        addFriendMenu.setBorder(BorderFactory.createLineBorder(HEADER_COLOR));
-        themeMenu.setBorder(BorderFactory.createLineBorder(HEADER_COLOR));
-        homeMenu.setBorder(BorderFactory.createLineBorder(HEADER_COLOR));
-    }
-
 }

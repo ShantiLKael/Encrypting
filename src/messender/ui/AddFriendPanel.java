@@ -79,7 +79,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
         nicknameField.setSelectedTextColor(new Color(193, 187, 234));
         nicknameField.setSelectionColor(new Color(193, 187, 234));
         
-        addFriendBtn = new JButton(new ImageIcon("/icons/plus.png"));
+        addFriendBtn = new JButton("+");
         addFriendBtn.setFocusPainted(false);
         addFriendBtn.setBackground(new Color(193, 187, 234));
         addFriendBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -116,7 +116,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
         leftPanel.setLayout(new BorderLayout());
         topLeftPanel.setBackground(new Color(250, 194, 194));
 
-        acceptFriendBtn = new JButton(new ImageIcon("/icons/plus-minus.png"));
+        acceptFriendBtn = new JButton("+");
         acceptFriendBtn.setFocusPainted(false);
         acceptFriendBtn.setBackground(new Color(255, 102, 102));
 
@@ -157,6 +157,11 @@ public class AddFriendPanel extends JPanel implements ActionListener
         // adding listeners
         acceptFriendBtn.addActionListener(this);
         addFriendBtn.addActionListener(this);
+    }
+
+    public void clearError() 
+    {
+        this.errorAddFriendLbl.setText("");
     }
 
     @Override

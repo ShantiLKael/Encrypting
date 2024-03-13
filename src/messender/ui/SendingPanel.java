@@ -47,7 +47,7 @@ public class SendingPanel extends JPanel implements ActionListener
         messagePanel.setBackground(new Color(242, 193, 193));
         messagePanel.setBorder(BorderFactory.createLineBorder(new Color(229, 185, 185), 2));
 
-        sendMessBtn = new JButton( new ImageIcon("/icons/sent-minus.png") );
+        sendMessBtn = new JButton("send");
         sendMessBtn.setFocusPainted(false);
         sendMessBtn.setBackground(new Color(193, 187, 234));
 
@@ -103,7 +103,7 @@ public class SendingPanel extends JPanel implements ActionListener
         friendListLbl.setFont(new Font("Nirmala UI", 1, 16)); // NOI18N
         friendListLbl.setForeground(new Color(226, 90, 90));
 
-        delFriendBtn = new JButton(new ImageIcon("/icons/bin.png"));
+        delFriendBtn = new JButton("X");
         delFriendBtn.setFocusPainted(false);
         delFriendBtn.setBackground(new Color(255, 102, 102));
 
@@ -129,6 +129,11 @@ public class SendingPanel extends JPanel implements ActionListener
         // adding listeners
         sendMessBtn.addActionListener(this);
         delFriendBtn.addActionListener(this);   
+    }
+
+    public void clearError() 
+    {
+        this.errorSendingLbl.setText("");
     }
 
     @Override

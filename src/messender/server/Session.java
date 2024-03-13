@@ -69,14 +69,14 @@ public class Session extends Client
 			// Connecting to the server of the receiver
 			Socket toServ = new Socket(receiver.host, receiver.port);
 
-			PrintWriter out = new PrintWriter(toServ.getOutputStream(), false); // FullMessage => name @ port : message
-			out.println( this.name + "@" + this.port + ":" + this.messageEncoder.encrypt(message));
+			PrintWriter out = new PrintWriter(toServ.getOutputStream()); // FullMessage => name @ port : message
+			out.println(this.name + "@" + this.port + ":" + this.messageEncoder.encrypt(message));
 			this.addMessageHistory(receiver.name, message);
 
 			out.close();
 			toServ.close();
 		}
-		catch (IOException e) { e.printStackTrace(); }
+		catch (IOException e) { e.printStackTrace(); System.out.println("sendMessage ERROR : " + message); }
 	}
 
 	/**
@@ -99,12 +99,12 @@ public class Session extends Client
 	 * @param clientName interlocutor
 	 * @param message
 	 */
-	void addMessageHistory( String senderName, String m ) 
+	void addMessageHistory( String clientName, String m ) 
 	{
-		if ( !this.histMessages.containsKey(senderName) )
-			this.histMessages.put(senderName, new ArrayList<String>());
+		if ( !this.histMessages.containsKey(clientName) )
+			this.histMessages.put(clientName, new ArrayList<String>());
 	
-		this.histMessages.get(senderName).add(m);
+		this.histMessages.get(clientName).add(m);
 	}
 
 	public void addFriend( Client c ) 
