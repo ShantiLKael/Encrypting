@@ -23,10 +23,14 @@ public class FrameApp extends JFrame implements ActionListener
 {
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
-	public static Font HEADER_FONT = new Font("Nirmala UI", 1, 14);
-	public static Color HEADER_COLOR = new Color(255, 132, 149);
+
+	public static Font  HEADER_FONT = new Font("Nirmala UI", 1, 14);
+	public static Color HEADER_BGCOLOR = new Color(255, 132, 149);
 	public static Color HEADER_OUTLINE_COLOR = new Color(251, 163, 163);
+	
 	public static Color CONTENT_BGCOLOR = new Color(255, 234, 233);
+	public static Font  CONTENT_FONT = new Font("Nirmala UI", 1, 16);
+	public static Color LIST_SELECT_COLOR = new Color(255, 168, 168);
 	
 	private static Session USER;
 
@@ -55,34 +59,34 @@ public class FrameApp extends JFrame implements ActionListener
 
 		sendMenu = new JButton("Send");
 		sendMenu.setFocusPainted(false);
-		sendMenu.setBackground(HEADER_COLOR);
+		sendMenu.setBackground(HEADER_BGCOLOR);
 		sendMenu.setFont(HEADER_FONT);
 		//sendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/sent.png")));
 		this.setAllDimensions(sendMenu, btnHeaderBtn);
 
 		addFriendMenu = new JButton("Friend");
 		addFriendMenu.setFocusPainted(false);
-		addFriendMenu.setBackground(HEADER_COLOR);
+		addFriendMenu.setBackground(HEADER_BGCOLOR);
 		addFriendMenu.setFont(HEADER_FONT);
 		//addFriendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/friend.png")));
 		this.setAllDimensions(addFriendMenu, btnHeaderBtn);
 
 		themeMenu = new JButton("Theme");
 		themeMenu.setFocusPainted(false);
-		themeMenu.setBackground(HEADER_COLOR);
+		themeMenu.setBackground(HEADER_BGCOLOR);
 		themeMenu.setFont(HEADER_FONT);
 		//themeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/theme.png")));
 		this.setAllDimensions(themeMenu, btnHeaderBtn);
 
 		homeMenu = new JButton("Home");
 		homeMenu.setFocusPainted(false);
-		homeMenu.setBackground(HEADER_COLOR);
+		homeMenu.setBackground(HEADER_BGCOLOR);
 		homeMenu.setFont(HEADER_FONT);
 		//homeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/home.png")));
 		this.setAllDimensions(homeMenu, btnHeaderBtn);
 		
 		upperBar = new JPanel();
-		upperBar.setBackground(HEADER_COLOR);
+		upperBar.setBackground(HEADER_BGCOLOR);
 		upperBar.setPreferredSize(new Dimension(400, 500));
 		upperBar.setLayout(new GridLayout(1, 0));
 		upperBar.setBounds(0, 0, 800, 50);

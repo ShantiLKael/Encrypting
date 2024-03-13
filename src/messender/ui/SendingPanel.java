@@ -95,13 +95,13 @@ public class SendingPanel extends JPanel implements ActionListener
 			public int getSize() { return strings.length; }
 			public String getElementAt(int i) { return strings[i]; }
 		});
-		friendList.setSelectionBackground(new Color(255, 168, 168));
+		friendList.setSelectionBackground(FrameApp.LIST_SELECT_COLOR);
 
 		JPanel topleftPanel = new JPanel();
 		topleftPanel.setBackground(new Color(250, 194, 194));
 
 		JLabel friendListLbl = new JLabel("Friend                    ");
-		friendListLbl.setFont(new Font("Nirmala UI", 1, 16)); // NOI18N
+		friendListLbl.setFont(FrameApp.CONTENT_FONT);
 		friendListLbl.setForeground(new Color(226, 90, 90));
 
 		delFriendBtn = new JButton("X");

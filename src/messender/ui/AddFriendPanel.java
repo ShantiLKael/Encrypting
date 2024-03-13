@@ -90,7 +90,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
 		errorAddFriendLbl.setForeground(new Color(255, 102, 0));
 
 		JLabel friendRequestListLbl = new JLabel("Friend Request List");
-		friendRequestListLbl.setFont(new Font("Nirmala UI", 1, 16));
+		friendRequestListLbl.setFont(FrameApp.CONTENT_FONT);
 		friendRequestListLbl.setForeground(new Color(226, 90, 90));
 		friendRequestListLbl.getAccessibleContext().setAccessibleName("Friend Request");
 
@@ -110,7 +110,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
 			public int getSize() { return strings.length; }
 			public String getElementAt(int i) { return strings[i]; }
 		});
-		friendRequestList.setSelectionBackground(new Color(255, 168, 168));
+		friendRequestList.setSelectionBackground(FrameApp.LIST_SELECT_COLOR);
 
 		JPanel leftPanel = new JPanel();
 		JPanel topLeftPanel = new JPanel();
