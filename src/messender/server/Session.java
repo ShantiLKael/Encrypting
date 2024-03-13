@@ -9,8 +9,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Map;
 
-import messender.crypting.Affine;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

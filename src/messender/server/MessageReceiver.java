@@ -10,7 +10,7 @@ class MessageReceiver extends Thread
 	private Session session;
 	private BufferedReader in;
 	private PrintWriter out;
-	private Socket servSocket;
+	private Socket connection;
 
 	MessageReceiver ( Session session ) 
 	{
@@ -18,15 +18,15 @@ class MessageReceiver extends Thread
 
 		try
 		{
-			this.servSocket	= this.session.getServSocket().accept(); // waiting for client
+			this.connection	= this.session.getServSocket().accept(); // waiting for client
 		}
 		catch ( UnknownHostException e ) { e.printStackTrace(); }
 		catch ( IOException e ) { e.printStackTrace(); }
 
 		try 
 		{
-			this.in  = new BufferedReader( new InputStreamReader( servSocket.getInputStream()) );
-			this.out = new PrintWriter( servSocket.getOutputStream(), true );
+			this.in  = new BufferedReader( new InputStreamReader( connection.getInputStream()) );
+			this.out = new PrintWriter( connection.getOutputStream(), true );
 		}
 		catch ( IOException e ) { e.printStackTrace(); }
 	}
@@ -63,7 +63,7 @@ class MessageReceiver extends Thread
 
 			System.out.println(session.getHistMessages()); // TODO remove delete
 			
-			servSocket.close();
+			connection.close();
 			in.close();
 			out.close();
 		}

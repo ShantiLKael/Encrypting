@@ -31,9 +31,9 @@ public class AddFriendPanel extends JPanel implements ActionListener
     private JTextField nameField;
     private JTextField hostField;
 
-    private JButton    addFriendBtn;
-    private JButton    acceptFriendBtn;
-    private JLabel     errorAddFriendLbl;
+    private JButton addFriendBtn;
+    private JButton acceptFriendBtn;
+    private JLabel  errorAddFriendLbl;
     private JList<String> friendRequestList;
 
 
