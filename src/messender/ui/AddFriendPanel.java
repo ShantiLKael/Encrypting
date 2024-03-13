@@ -80,6 +80,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
         nicknameField.setSelectionColor(new Color(193, 187, 234));
         
         addFriendBtn = new JButton(new ImageIcon("/icons/plus.png"));
+        addFriendBtn.setFocusPainted(false);
         addFriendBtn.setBackground(new Color(193, 187, 234));
         addFriendBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -116,6 +117,7 @@ public class AddFriendPanel extends JPanel implements ActionListener
         topLeftPanel.setBackground(new Color(250, 194, 194));
 
         acceptFriendBtn = new JButton(new ImageIcon("/icons/plus-minus.png"));
+        acceptFriendBtn.setFocusPainted(false);
         acceptFriendBtn.setBackground(new Color(255, 102, 102));
 
         topLeftPanel.add(friendRequestListLbl);

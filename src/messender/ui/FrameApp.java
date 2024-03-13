@@ -53,6 +53,7 @@ public class FrameApp extends JFrame implements ActionListener
         Dimension btnHeaderBtn = new Dimension(84, 28);
 
         sendMenu = new JButton();
+        sendMenu.setFocusPainted(false);
         sendMenu.setBackground(HEADER_COLOR);
         sendMenu.setFont(HEADER_FONT);
         sendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/sent.png")));
@@ -60,6 +61,7 @@ public class FrameApp extends JFrame implements ActionListener
         this.setAllDimension(sendMenu, btnHeaderBtn);
 
         addFriendMenu = new JButton();
+        addFriendMenu.setFocusPainted(false);
         addFriendMenu.setBackground(HEADER_COLOR);
         addFriendMenu.setFont(HEADER_FONT);
         addFriendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/friend.png")));
@@ -67,6 +69,7 @@ public class FrameApp extends JFrame implements ActionListener
         this.setAllDimension(addFriendMenu, btnHeaderBtn);
 
         themeMenu = new JButton();
+        themeMenu.setFocusPainted(false);
         themeMenu.setBackground(HEADER_COLOR);
         themeMenu.setFont(HEADER_FONT);
         themeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/theme.png")));
@@ -74,6 +77,7 @@ public class FrameApp extends JFrame implements ActionListener
         this.setAllDimension(themeMenu, btnHeaderBtn);
 
         homeMenu = new JButton();
+        homeMenu.setFocusPainted(false);
         homeMenu.setBackground(HEADER_COLOR);
         homeMenu.setFont(HEADER_FONT);
         homeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/home.png")));
@@ -146,6 +150,7 @@ public class FrameApp extends JFrame implements ActionListener
     {
         if (e.getSource() == addFriendMenu)
         {
+            addFriendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
             contentPage.removeAll();
             contentPage.add(addFriendP);
             addFriendP.setBounds(0, 0, 800, 550);
@@ -155,6 +160,9 @@ public class FrameApp extends JFrame implements ActionListener
 
         if (e.getSource() == sendMenu)
         {
+            this.defaultBorder();
+            sendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
+
             contentPage.removeAll();
             contentPage.add(sendingP);
             sendingP.setBounds(0, 0, 800, 550);
@@ -164,6 +172,14 @@ public class FrameApp extends JFrame implements ActionListener
             
         //if ( e.getSource() == themeMenu )
         //if ( e.getSource() == homeMenu )
+    }
+
+    private void defaultBorder()
+    {
+        sendMenu.setBorder(BorderFactory.createLineBorder(HEADER_COLOR));
+        addFriendMenu.setBorder(BorderFactory.createLineBorder(HEADER_COLOR));
+        themeMenu.setBorder(BorderFactory.createLineBorder(HEADER_COLOR));
+        homeMenu.setBorder(BorderFactory.createLineBorder(HEADER_COLOR));
     }
 
 }
