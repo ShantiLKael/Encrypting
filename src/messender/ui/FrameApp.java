@@ -57,28 +57,28 @@ public class FrameApp extends JFrame implements ActionListener
         sendMenu.setFont(HEADER_FONT);
         sendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/sent.png")));
         sendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
-        this.setAllDimension(sendMenu, btnHeaderBtn);
+        this.setAllDimensions(sendMenu, btnHeaderBtn);
 
         addFriendMenu = new JButton();
         addFriendMenu.setBackground(HEADER_COLOR);
         addFriendMenu.setFont(HEADER_FONT);
         addFriendMenu.setIcon(new ImageIcon(getClass().getResource("/icons/friend.png")));
         addFriendMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
-        this.setAllDimension(addFriendMenu, btnHeaderBtn);
+        this.setAllDimensions(addFriendMenu, btnHeaderBtn);
 
         themeMenu = new JButton();
         themeMenu.setBackground(HEADER_COLOR);
         themeMenu.setFont(HEADER_FONT);
         themeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/theme.png")));
         themeMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
-        this.setAllDimension(themeMenu, btnHeaderBtn);
+        this.setAllDimensions(themeMenu, btnHeaderBtn);
 
         homeMenu = new JButton();
         homeMenu.setBackground(HEADER_COLOR);
         homeMenu.setFont(HEADER_FONT);
         homeMenu.setIcon(new ImageIcon(getClass().getResource("/icons/home.png")));
         homeMenu.setBorder(BorderFactory.createLineBorder(new Color(251, 163, 163)));
-        this.setAllDimension(homeMenu, btnHeaderBtn);
+        this.setAllDimensions(homeMenu, btnHeaderBtn);
         
         upperBar = new JPanel();
         upperBar.setBackground(HEADER_COLOR);
@@ -134,7 +134,7 @@ public class FrameApp extends JFrame implements ActionListener
         this.setVisible(true);
     }
 
-    private void setAllDimension(JButton btn, Dimension d)
+    private void setAllDimensions(JButton btn, Dimension d)
     {
         btn.setMaximumSize(d);
         btn.setMinimumSize(d);
